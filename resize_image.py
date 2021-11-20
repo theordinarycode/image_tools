@@ -1,4 +1,4 @@
-#comment tester
+#simple python script to resize images
 
 import re
 import os
