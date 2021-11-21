@@ -23,14 +23,14 @@ def rename_files():
         files_list.append(file_name)
         files_path = files_path+'/'
 
-    first_pass = True
     new_basename = input('type the base name for your files: ')
+    padding = input('specify the number of zeros(int) you want for file number padding: ')
     file_number = 0
     
     with alive_bar(len(files_list)) as bar:
         for file_name_extension in files_list:
             file_number = file_number +1
-            padded_number = str((file_number)).zfill(5)
+            padded_number = str((file_number)).zfill(int(padding))
             file_name = file_name_extension.rsplit('.', 1)[0]
             file_extension = file_name_extension.rsplit('.', 1)[1] 
             file_path = files_path + file_name_extension
