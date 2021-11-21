@@ -24,7 +24,7 @@ def get_extension(format):
 def get_filter(filter):
     return FILTERS.get(filter, 'default') 
 
-def scale_images():
+def resize_images():
     multiple = input('do you want to scale multiple images? (y/n): ')
     if multiple == 'y':
         print('you are processing multiple images.')
@@ -77,6 +77,9 @@ def scale_images():
                 + output_extension, output_format) 
             bar()
 
-scale_images()
+
+if __name__ == "__main__":
+    resize_images()
+
     
 
