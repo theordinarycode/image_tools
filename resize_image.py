@@ -1,5 +1,4 @@
 #simple python script to resize images
-
 import re
 import os
 from PIL import Image
