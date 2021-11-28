@@ -1,70 +1,81 @@
 from PIL import Image, PngImagePlugin
+import os
+import re
 
-def get_data():
+
+def get_path():
+    print('Will you be processing multiple images?')
+    test = input('type yes or no: ')
+    multiple = False
+    settings = []
+    if test.lower() in ['yes', 'y'] :
+        multiple = True
+        settings.append(multiple)
+        path = input('path to your images: ')
+        settings.append(path+'/')
+    else:
+        settings.append(multiple) 
+        path = input('full path to your image (including the image): ')
+        settings.append(path)
+    return settings
+    
+def add_data():
     data = {}
-    data['path_to_image'] = input('path to your image: ')
-
     attributes = input('add required attributes as comma separated list: ')
-    print(attributes.split(','))
     for attribute in [x.strip() for x in attributes.split(',')]:
         if len(attribute) > 0:
-            data[attribute] = input('add attribuet "{}" value: '.format(attribute))
-    print(data)
-
+            data[attribute] = input('add attribute "{}" value: '.format(attribute))
     return data
 
-def display_image(data):
-    image = Image.open(data['path_to_image'])
+def display_image(settings, file):
+    print(settings[1]+file)
+    image = Image.open(settings[1]+file)
     image.show()
 
-def add_metadata(data):
-    print(data['path_to_image'])
+def add_metadata(data, settings, file):
     info = PngImagePlugin.PngInfo()
     for index, attribute in enumerate(data):
         if index>0: 
-            print(attribute, data[attribute])
             info.add_text(attribute, data[attribute])
-    image = Image.open(data['path_to_image']) 
-    image.save(data['path_to_image'], pnginfo=info)
+    image = Image.open(settings[1]+file)
+    image.save(settings[1]+file, pnginfo=info)
 
-def read_metadata(data):
-    #property_array = [x.strip() for x in properties.split(',')]
-    print('read metadata')
-    image = Image.open(data['path_to_image'])
-    #print(image.text, type(image.text))
+def read_metadata(settings, file):
+    image = Image.open(settings[1]+file)
     attributes = image.text
     for key in attributes:
-        print(key, [x.strip() for x in attributes[key].split(',')])
+        attributeArray = [x.strip() for x in attributes[key].split(',')]
+        if len(attributeArray)>1:
+            print(key+":", attributeArray)
+        else:
+            print(key+":", attributeArray[0])
 
+
+def process_image(settings, file):
+    display_image(settings, file)
+    data = add_data()
+    add_metadata(data, settings, file)
+    read_metadata(settings, file)
 
 if __name__ == "__main__":
-    data = get_data()
-    #display_image(data)
-    add_metadata(data)
-    read_metadata(data)
+    settings = get_path()
+    print(settings)
+    if settings[0] == True:
+        files_list = [f for f in os.listdir(settings[1]) if not f.startswith('.')]
+        files_list.sort()
+        for file in files_list:
+            print(settings[1]+file)
+            process_image(settings, file)
+    else:
+        path = os.path.dirname(settings[1])
+        print(path) 
+        file = os.path.basename(settings[1])
+        print(settings[1])
+        process_image(settings, file)
+    
 
 
 
 
-# pathToImage = input('path to your image: ')
 
-# info = PngImagePlugin.PngInfo()
-# imageTitle = 'myImageFromCombinator'
-# text = input('text to add to image metadata: ')
-# elementsarray = ['blood', 'guts', 'slime']
-# elementsstring = ','.join(elementsarray)
-# info.add_text("text", text)
-# info.add_text("title", imageTitle)
-# info.add_text("ZIP", "VALUE", zip=True)
-# info.add_text('elements', elementsstring)
 
-# im = Image.open(pathToImage) 
-
-# outPutPath = input('path to output: ')
-# im.save(outPutPath+'/'+imageTitle+'.png', "PNG", pnginfo=info)
-
-# im2 = Image.open(outPutPath+'/'+imageTitle+'.png')
-# # print(im2.text["text"])
-# # print(im2.text["title"])
-# print(im2.text)
-# print(im2.text['elements'].split(','))

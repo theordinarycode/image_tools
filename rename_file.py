@@ -3,7 +3,7 @@ import os
 from alive_progress import alive_bar
 
 def rename_files():
-    multiple = input('do you want to scale multiple images? (y/n): ')
+    multiple = input('do you want to rename multiple images? (y/n): ')
     if multiple == 'y':
         print('you are processing multiple images.')
         files_path = input('path to images: ')
