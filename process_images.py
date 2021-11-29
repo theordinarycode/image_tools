@@ -1,7 +1,7 @@
 import os 
 import re
 
-def get_path():
+def get_settings():
     print('Will you be processing multiple images?')
     multiple = input('Type yes or no: ')
     settings = {}
@@ -16,8 +16,16 @@ def get_path():
         rename = input('type yes or no: ')
         if rename.lower() in ['yes', 'y']:
             settings['basename'] =input('Basename: ')
-        else: 
-           settings['basename'] = ''
+        else:
+            first_pass = True
+            for file in os.listdir(settings['path']):
+                if not file.startswith('.') and first_pass == True:
+                    first_image = file
+                    print(os.path.basename(first_image).split('.')[0])
+                    first_pass = False
+            settings['basename'] = os.path.basename(first_image).split('.')[0]
+    
+
     else:
         settings['multiple_files'] = False
         path = input('Full path to your image (including the image): ')
@@ -26,18 +34,29 @@ def get_path():
         rename = input('Type yes or no: ')
         settings['basename']=os.path.basename(path).split('.')[0]
 
+    output_directory = input('output directory: ')
+    settings['output_directory'] = output_directory
     return settings
 
-def process(settings):
+
+
+def process(settings, functions):
     if(settings['multiple_files'] == True):
         for file in os.listdir(settings['path']):
             if not file.startswith('.'):
-                print(file)
+                functions()
     else:
         print('ok its a single file')
 
+def hima():
+    print(settings)
 
 if __name__ == "__main__":
-    settings = get_path()
-    print(settings)
-    process(settings)
+    settings = get_settings()
+    process(settings, hima)
+
+
+def process_images(functions):
+   settings = get_settings()
+   print(settings)
+   process(settings, functions) 
