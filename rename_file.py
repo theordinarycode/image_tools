@@ -11,7 +11,6 @@ def rename_files():
         search = re.findall(regex, files_path)
         formatted_directory = search[0] + '/'
         files_path = formatted_directory
-        #files_list = os.listdir(files_path)
         files_list = [f for f in os.listdir(files_path) if not f.startswith('.')]
         files_list.sort()
     else:
