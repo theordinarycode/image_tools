@@ -1,7 +1,6 @@
 import os 
 import re
 
-
 def get_settings():
     print('Will you be processing multiple images?')
     multiple = input('Type yes or no: ')

@@ -6,9 +6,9 @@ settings = {}
 def get_settings():
     print('Will you be processing multiple images?')
     multiple = input('Type yes or no: ')
-    print('Please indicate the operations you\'d like to perform')
-    commands = input('Type any of the following commands: rename, resize, addMetaData, combineImages. Each command should separated by a space.  \nOperations: ')
-    commandsList = commands.split(' ')
+    print('Please indicate the operations you\'d like to perform...')
+    commands = input('Type any combination of the following commands: rename, resize, add_metadata, combine_images. Each command should separated by a comma (ex: one,two,three).  \nOperations: ')
+    commandsList = commands.split(',')
     settings['commands'] = commandsList
     
     if multiple.lower() in ['yes', 'y'] :
